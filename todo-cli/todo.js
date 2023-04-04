@@ -10,20 +10,17 @@ const todoList = () => {
     const overdue = () => {
       // Write the date check condition here and return the array
       // of overdue items accordingly.
-      const today = new Date()
-    return all.filter(item => {
-      const dueDate = new Date(item.dueDate)
-      return !item.completed && dueDate < today
-    })
+      const overdueItems = all.filter((item) => {
+        return item.dueDate < today && !item.completed
+      })
+      return overdueItems
     }
   
     const dueToday = () => {
       // Write the date check condition here and return the array
       // of todo items that are due today accordingly.
-      const today = new Date()
-    // filter items that are incomplete and due today
-    const dueTodayItems = all.filter(item => !item.completed && new Date(item.dueDate) <= today)
-    return dueTodayItems
+      const today = new Date().toISOString().split('T')[0]; // Get today's date
+  return all.filter(item => item.dueDate === today);
     }
   
     const dueLater = () => {
