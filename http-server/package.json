@@ -8,5 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "HAMANPURE VAIBHAV <21951A05N5@iare.ac.in>",
-  "license": "ISC"  
+  "license": "ISC",
+  "dependencies": {
+    "minimist": "^1.2.8"
+  }
 }
