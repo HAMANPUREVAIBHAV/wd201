@@ -63,7 +63,6 @@ describe("Todolist test suite", () => {
     });
     //checks retrieval of due today items.
     test("retrieval of due today items.",()=>{
-        console.log(dueToday())
         var dueTodayList = [];
         expect(dueTodayList.length).toBe(0);
         dueTodayList = dueToday();
@@ -71,8 +70,6 @@ describe("Todolist test suite", () => {
     });
     //checks retrieval of due later items.
     test("retrieval of due later items.",()=>{
-        console.log(all)
-        console.log(dueLater())
         var dueLaterList = [];
         expect(dueLaterList.length).toBe(0);
         dueLaterList = dueLater();
