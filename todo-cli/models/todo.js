@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    displaytoday(){
+      return `${this.completed? '[x]': '[]'} ${this.id} ${this.title}`
+    }
     static async addTask(params) {
       return await Todo.create(params);
     }
@@ -20,13 +23,14 @@ module.exports = (sequelize, DataTypes) => {
       console.log("Overdue");
       // FILL IN HERE
       const overdueItems =  await Todo.overdue();
+      
       const overdueItemsList = overdueItems.map(todo => todo.displayableString() ).join("\n");
       console.log(overdueItemsList);
       console.log("\n");
 
       console.log("Due Today");
       const dueTodayItems =  await Todo.dueToday();
-      const dueTodayItemsList = dueTodayItems.map(todo => todo.displayableString() ).join("\n");
+      const dueTodayItemsList = dueTodayItems.map(todo => todo.displaytoday() ).join("\n");
       console.log(dueTodayItemsList);
       // FILL IN HERE
       console.log("\n");
