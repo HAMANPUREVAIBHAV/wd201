@@ -11,9 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    displaytoday(){
-      return `${this.id}. ${this.completed? '[x]': '[]'} ${this.title}`
-    }
     static async addTask(params) {
       return await Todo.create(params);
     }
@@ -30,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
 
       console.log("Due Today");
       const dueTodayItems =  await Todo.dueToday();
-      const dueTodayItemsList = dueTodayItems.map(todo => todo.displaytoday() ).join("\n");
+      const dueTodayItemsList = dueTodayItems.map(todo => todo.displayableString() ).join("\n");
       console.log(dueTodayItemsList);
       // FILL IN HERE
       console.log("\n");
@@ -87,7 +84,12 @@ module.exports = (sequelize, DataTypes) => {
 
     displayableString() {
       let checkbox = this.completed ? "[x]" : "[ ]";
-      return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`;
+      if (this.dueDate === sequelize.literal("CURRENT_DATE")) {
+        return `${this.id}. ${checkbox} ${this.title}`;
+      } else {
+        return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`;
+      }
+    
     }
   }
   Todo.init({
