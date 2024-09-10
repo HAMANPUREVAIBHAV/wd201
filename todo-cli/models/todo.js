@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     displaytoday(){
-      return `${this.completed? '[x]': '[]'} ${this.id} ${this.title}`
+      return `${this.id}. ${this.completed? '[x]': '[]'} ${this.title}`
     }
     static async addTask(params) {
       return await Todo.create(params);
