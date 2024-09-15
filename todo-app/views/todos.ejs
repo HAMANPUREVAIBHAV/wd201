@@ -2,7 +2,7 @@
     <div class="flex">
         <!-- Overdue -->
         <h5 class="font-bold text-base" >Overdue</h5>
-        <div class="text-base font-bold px-3  box-content ml-2 mb-2 rounded bg-gray-200">
+        <div id = "count-overdue" class="text-base font-bold px-3  box-content ml-2 mb-2 rounded bg-gray-200">
             <% count = 0 %>
             <% for( let i = 0; i < allTodos.length; i++ ) { %>
                 <% if (allTodos[i].dueDate < new Date().toISOString().split("T")[0]) { %>
@@ -33,7 +33,7 @@
     <!-- Due Today -->
     <div class="flex">
         <h5 class="font-bold text-base"  >Due Today</h5>
-        <div class="text-base font-bold px-3 box-content ml-2 mb-2 rounded bg-gray-200">
+        <div id="count-due-today" class="text-base font-bold px-3 box-content ml-2 mb-2 rounded bg-gray-200">
             <% count = 0 %>
             <% for( let i = 0; i < allTodos.length; i++ ) { %>
                 <% if (allTodos[i].dueDate === new Date().toISOString().split("T")[0]) { %>
@@ -64,7 +64,7 @@
     <!-- Due Later -->
     <div class="flex">
         <h5 class="font-bold text-base"  >Due Later</h5>
-        <div class="text-base font-bold px-3 box-content ml-2 mb-2 rounded bg-gray-200">
+        <div id="count-due-later" class="text-base font-bold px-3 box-content ml-2 mb-2 rounded bg-gray-200">
             <% count = 0 %>
             <% for( let i = 0; i < allTodos.length; i++ ) { %>
                 <% if (allTodos[i].dueDate > new Date().toISOString().split("T")[0]) { %>
