@@ -1,54 +1,52 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const path = require("path")
+const path = require("path");
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
 
 const { Todo } = require("./models");
 
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
 
-app.get("/",async(req,res)=>{
+app.get("/", async (req, res) => {
   const allTodos = await Todo.getTodo();
-  if(req.accepts('html')){
-    res.render("index",{
-      allTodos
-    })
-  }else{
+  if (req.accepts("html")) {
+    res.render("index", {
+      allTodos,
+    });
+  } else {
     res.json({
-      allTodos
-    })
+      allTodos,
+    });
   }
-  res.render("index")
-})
+  res.render("index");
+});
 
-app.use(express.static(path.join(__dirname,'public')))
+app.use(express.static(path.join(__dirname, "public")));
 
 // eslint-disable-next-line no-unused-vars
 app.get("/todos", async (req, res) => {
   // res.send("Hello World!")
   // console.log("Todo list");
   try {
-    const todos = await Todo.findAll()
-    res.json(todos)
-    
+    const todos = await Todo.findAll();
+    res.json(todos);
   } catch (error) {
     console.log(error);
     return res.status(422).json(error);
   }
- 
-
 });
 
 app.post("/todos", async (req, res) => {
   console.log("Creating a todo", req.body);
   //Todo
   try {
-    const todo = await Todo.addTodo({
+    await Todo.addTodo({
       title: req.body.title,
       dueDate: req.body.dueDate,
     });
-    return res.json(todo);
+    return res.redirect("/");
   } catch (error) {
     console.log(error);
     return res.status(422).json(error);
@@ -77,8 +75,8 @@ app.delete("/todos/:id", async (req, res) => {
       where: {
         id: req.params.id,
       },
-    }); 
-    return a ?  res.send(true): res.send(false)
+    });
+    return a ? res.send(true) : res.send(false);
   } catch (error) {
     console.log(error);
     return res.status(422).json(error);
