@@ -1,9 +1,14 @@
 const express = require("express");
+const csrf = require("csurf");
 const app = express();
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser("shh! some secret string"))
+app.use(csrf({cookie : true }))
+
 
 const { Todo } = require("./models");
 
@@ -14,6 +19,7 @@ app.get("/", async (req, res) => {
   if (req.accepts("html")) {
     res.render("index", {
       allTodos,
+      csrfToken : req.csrfToken()
     });
   } else {
     res.json({
