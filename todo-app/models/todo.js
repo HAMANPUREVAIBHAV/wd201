@@ -13,6 +13,13 @@ module.exports = (sequelize, DataTypes) => {
     static addTodo({ title, dueDate }) {
       return Todo.create({ title: title, dueDate: dueDate, completed: false });
     }
+    static async remove(id){
+      return await Todo.destroy({
+        where: {
+          id: id,
+        },
+      });
+    }
 
     static getTodo() {
       return this.findAll();

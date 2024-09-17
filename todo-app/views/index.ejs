@@ -8,7 +8,32 @@
     </title>
     <link rel="stylesheet" href="./css/styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script>
+        function updateTodo(id){
+            fetch(`/todos/${id}/markAsCompleted`,{
+                method: "put",
+                hearders: {"Content-Type":"application/json"},
+            }).then((res)=>{
+                if (res.ok){
+                    window.location.reload();
+                }
+            }).catch((error)=> console.log(error));
+
+        }
+        function deleteTodo(id){
+            fetch(`/todos/${id}`,{
+                method: "delete",
+                hearders: {"Content-Type":"application/json"},
+            }).then((res)=>{
+                if (res.ok){
+                    window.location.reload();
+                }
+            }).catch((error)=> console.log(error));
+
+        }
+        
+        
+    </script>
 </head>
 <body>
     <div class="grid grid-cols-6">
