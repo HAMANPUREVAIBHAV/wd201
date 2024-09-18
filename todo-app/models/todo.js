@@ -7,13 +7,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
-    }
+    // static associate(models) {
+    //   // define association here
+    // }
     static addTodo({ title, dueDate }) {
       return Todo.create({ title: title, dueDate: dueDate, completed: false });
     }
-    static async remove(id){
+    static async remove(id) {
       return await Todo.destroy({
         where: {
           id: id,
@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll();
     }
     markAsCompleted() {
+      if (this.completed === true){
+        return this.update({completed:false})
+      }
       return this.update({ completed: true });
     }
   }
