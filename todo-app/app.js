@@ -8,12 +8,15 @@ const path = require("path");
 const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
 const session = require("express-session");
+const flash = require("connect-flash"); //connect-flash
 const LocalStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 
+app.set("views", path.join(__dirname, "views")); //set views
 app.set("view engine", "ejs");
+app.use(flash());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser("shh! some secret string"));
@@ -31,6 +34,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+//messages are available while rendering any ejs templates
+app.use(function (request, response, next) {
+  response.locals.messages = request.flash();
+  next();
+});
+
 //apply strategy
 passport.use(
   new LocalStrategy(
@@ -45,7 +54,7 @@ passport.use(
           if (result) {
             return done(null, user);
           } else {
-            return done("Invalid password");
+            return done(null, false, { message: "Invalid password" });
           }
         })
         .catch((error) => {
@@ -127,7 +136,10 @@ app.get("/login", (req, res) => {
 //post method to handle login
 app.post(
   "/session",
-  passport.authenticate("local", { failureRedirect: "/login" }),
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
   (req, res) => {
     console.log(req.user);
     res.redirect("/todos");
@@ -160,6 +172,11 @@ app.post("/users", async (req, res) => {
       res.redirect("/todos");
     });
   } catch (error) {
+    if (error.name === "SequelizeValidationError") {
+      // Add validation errors to flash messages
+      error.errors.forEach((e) => req.flash("error", e.message));
+      return res.redirect("/signup");
+    }
     console.log(error);
   }
 });
@@ -186,6 +203,10 @@ app.post("/todos", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
     });
     return res.redirect("/todos");
   } catch (error) {
+    if (error.name === "SequelizeValidationError") {
+      error.errors.forEach((e) => req.flash("error", e.message));
+      return res.redirect("/todos");
+    }
     console.log(error);
     return res.status(422).json(error);
   }
