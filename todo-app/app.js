@@ -177,6 +177,10 @@ app.post("/users", async (req, res) => {
       error.errors.forEach((e) => req.flash("error", e.message));
       return res.redirect("/signup");
     }
+    if (error.name === "SequelizeUniqueConstraintError") {
+      req.flash("error", "Email is already in use");
+      return res.redirect("/signup");
+    }
     console.log(error);
   }
 });

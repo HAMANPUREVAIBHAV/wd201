@@ -41,7 +41,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notNull: { msg: "Password is a required field" },
           notEmpty: { msg: "Pasword must be entered" },
         },
       },
