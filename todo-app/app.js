@@ -84,6 +84,13 @@ const { Todo, User } = require("./models");
 // GET all todos and render them
 app.get("/", async (req, res) => {
   try {
+
+     // Check if user is logged in
+     if (req.isAuthenticated()) {
+      // Redirect logged-in user to the /todos page
+      return res.redirect("/todos");
+    }
+    
     res.render("index", {
       title: "Todo application",
       csrfToken: req.csrfToken(),
